@@ -1,5 +1,8 @@
+var util = require('util');
 var pkg = require('package-json-io');
 var semver = require('semver-utils');
+
+var assign = Object.assign || util._extend;
 
 module.exports = function (newVersion, cb) {
   pkg.read(function (err, data) {
@@ -17,7 +20,7 @@ module.exports = function (newVersion, cb) {
       return cb(new Error('The version package.json is non-compatible with semver'));
     }
 
-    data.version = semver.stringify(Object.assign(initialVersion, newVersion));
+    data.version = semver.stringify(assign(initialVersion, newVersion));
     pkg.update(data, cb);
   });
 };
